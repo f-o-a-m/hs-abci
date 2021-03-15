@@ -1,8 +1,12 @@
 syntax = "proto3";
-package proto;
+package iavl;
 
-import "google/protobuf/empty.proto";
+option go_package = "proto/proto";
+
 import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+import "iavl/proof.proto";
+
 
 // ----------------------------------------------------------------------------
 // gRPC service
@@ -14,7 +18,13 @@ service IAVLService {
   // has a given key at a specific tree version.
   rpc Has(HasRequest) returns (HasResponse) {
     option (google.api.http) = {
-      get: "/v1/tree/{version}/has"
+      get: "/v1/has"
+    };
+  }
+
+  rpc HasVersioned(HasVersionedRequest) returns (HasResponse) {
+    option (google.api.http) = {
+      get: "/v1/has_versioned"
     };
   }
 
@@ -22,7 +32,7 @@ service IAVLService {
   // key based on the current state (version) of the tree.
   rpc Get(GetRequest) returns (GetResponse) {
     option (google.api.http) = {
-      get: "/v1/tree/get"
+      get: "/v1/get"
     };
   }
 
@@ -31,15 +41,15 @@ service IAVLService {
   // verifiable Merkle proof.
   rpc GetWithProof(GetRequest) returns (GetWithProofResponse) {
     option (google.api.http) = {
-      get: "/v1/tree/get_with_proof"
+      get: "/v1/get_with_proof"
     };
   }
-
+  
   // GetVersioned returns a result containing the IAVL tree version and value
   // for a given key at a specific tree version.
   rpc GetVersioned(GetVersionedRequest) returns (GetResponse) {
     option (google.api.http) = {
-      get: "/v1/tree/{version}/get_versioned"
+      get: "/v1/{version}/get_versioned"
     };
   }
 
@@ -48,7 +58,7 @@ service IAVLService {
   // proof.
   rpc GetVersionedWithProof(GetVersionedRequest) returns (GetWithProofResponse) {
     option (google.api.http) = {
-      get: "/v1/tree/{version}/get_versioned_with_proof"
+      get: "/v1/{version}/get_versioned_with_proof"
     };
   }
 
@@ -56,7 +66,7 @@ service IAVLService {
   // based on the current state (version) of the tree.
   rpc Set(SetRequest) returns (SetResponse) {
     option (google.api.http) = {
-      post: "/v1/tree/set"
+      post: "/v1/set"
       body: "*"
     };
   }
@@ -65,7 +75,7 @@ service IAVLService {
   // based on the current state (version) of the tree.
   rpc Remove(RemoveRequest) returns (RemoveResponse) {
     option (google.api.http) = {
-      post: "/v1/tree/remove"
+      post: "/v1/remove"
       body: "*"
     };
   }
@@ -75,7 +85,7 @@ service IAVLService {
   // new version number.
   rpc SaveVersion(google.protobuf.Empty) returns (SaveVersionResponse) {
     option (google.api.http) = {
-      post: "/v1/tree/save_version"
+      post: "/v1/save_version"
       body: "*"
     };
   }
@@ -85,7 +95,7 @@ service IAVLService {
   // hash of the versioned tree that was deleted.
   rpc DeleteVersion(DeleteVersionRequest) returns (DeleteVersionResponse) {
     option (google.api.http) = {
-      post: "/v1/tree/delete_version"
+      post: "/v1/delete_version"
       body: "*"
     };
   }
@@ -93,22 +103,22 @@ service IAVLService {
   // Version returns the IAVL tree version based on the current state.
   rpc Version(google.protobuf.Empty) returns (VersionResponse) {
     option (google.api.http) = {
-      get: "/v1/tree/version"
+      get: "/v1/version"
     };
   }
 
   // Hash returns the IAVL tree root hash based on the current state.
   rpc Hash(google.protobuf.Empty) returns (HashResponse) {
     option (google.api.http) = {
-      get: "/v1/tree/hash"
+      get: "/v1/hash"
     };
   }
-
+  
   // VersionExists returns a result containing a boolean on whether or not a given
   // version exists in the IAVL tree.
   rpc VersionExists(VersionExistsRequest) returns (VersionExistsResponse) {
     option (google.api.http) = {
-      get: "/v1/tree/version_exists"
+      get: "/v1/version_exists"
     };
   }
 
@@ -116,7 +126,7 @@ service IAVLService {
   // invalid.
   rpc Verify(VerifyRequest) returns (google.protobuf.Empty) {
     option (google.api.http) = {
-      get: "/v1/tree/range_proof/verify"
+      get: "/v1/range_proof/verify"
     };
   }
 
@@ -124,7 +134,7 @@ service IAVLService {
   // an error if the proof or key is invalid.
   rpc VerifyItem(VerifyItemRequest) returns (google.protobuf.Empty) {
     option (google.api.http) = {
-      get: "/v1/tree/range_proof/verify_item"
+      get: "/v1/range_proof/verify_item"
     };
   }
 
@@ -132,7 +142,7 @@ service IAVLService {
   // returning an error if the proof or key is invalid.
   rpc VerifyAbsence(VerifyAbsenceRequest) returns (google.protobuf.Empty) {
     option (google.api.http) = {
-      get: "/v1/tree/range_proof/verify_absence"
+      get: "/v1/range_proof/verify_absence"
     };
   }
 
@@ -140,10 +150,55 @@ service IAVLService {
   // any unsaved modifications.
   rpc Rollback(google.protobuf.Empty) returns (google.protobuf.Empty) {
     option (google.api.http) = {
-      post: "/v1/tree/rollback"
+      post: "/v1/rollback"
       body: "*"
     };
   }
+
+  // Returns the committed versions
+  rpc GetAvailableVersions(google.protobuf.Empty) returns (GetAvailableVersionsResponse) {
+    option (google.api.http) = {
+      get: "/v1/available_versions"
+    };
+  }
+
+  // Load the most recent version
+  rpc Load(google.protobuf.Empty) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      post: "/v1/load"
+      body: "*"
+    };
+  }
+
+  // Load a specific version
+  rpc LoadVersion(LoadVersionRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      post: "/v1/load_version"
+      body: "*"
+    };
+  }
+
+  // Load a specific version and delete all the more recent versions
+  rpc LoadVersionForOverwriting(LoadVersionForOverwritingRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      post: "/v1/load_version_for_overwriting"
+      body: "*"
+    };
+  }
+
+  // Get the number of leaves in the tree
+  rpc Size(google.protobuf.Empty) returns (SizeResponse) {
+    option (google.api.http) = {
+      get: "/v1/size"
+    };
+  }
+
+  rpc List(ListElementsRequest) returns (stream ListElementsResponse) {
+    option (google.api.http) = {
+      get: "/v1/list"
+    };
+  }
+
 }
 
 // ----------------------------------------------------------------------------
@@ -151,6 +206,10 @@ service IAVLService {
 // ----------------------------------------------------------------------------
 
 message HasRequest {
+  bytes key = 1;
+}
+
+message HasVersionedRequest {
   int64 version = 1;
   bytes key = 2;
 }
@@ -183,21 +242,36 @@ message VersionExistsRequest {
 
 message VerifyRequest {
   bytes root_hash = 1;
-  RangeProof proof = 2;
+  iavl.RangeProof proof = 2;
 }
 
 message VerifyItemRequest {
   bytes root_hash = 1;
-  RangeProof proof = 2;
+  iavl.RangeProof proof = 2;
   bytes key = 3;
   bytes value = 4;
 }
 
 message VerifyAbsenceRequest {
   bytes root_hash = 1;
-  RangeProof proof = 2;
+  iavl.RangeProof proof = 2;
   bytes key = 3;
 }
+
+message LoadVersionRequest {
+  int64 version = 1;
+}
+
+message LoadVersionForOverwritingRequest {
+  int64 version = 1;
+}
+
+message ListElementsRequest {
+  bytes from_key = 1;
+  bytes to_key = 2;
+  bool ascending = 3;
+}
+
 
 // ----------------------------------------------------------------------------
 // Response types
@@ -245,30 +319,19 @@ message VersionExistsResponse {
 
 message GetWithProofResponse {
   bytes value = 1;
-  RangeProof proof = 2;
+  iavl.RangeProof proof = 2;
 }
 
-message ProofInnerNode {
-  int32 height = 1;
-  int64 size = 2;
-  int64 version = 3;
-  bytes left = 4;
-  bytes right = 5;
+message GetAvailableVersionsResponse {
+  repeated int64 versions = 1;
 }
 
-message ProofLeafNode {
+
+message SizeResponse {
+  int64 size = 1;
+}
+
+message ListElementsResponse {
   bytes key = 1;
-  bytes value_hash = 2;
-  int64 version = 3;
-}
-
-message PathToLeaf {
-  repeated ProofInnerNode nodes = 1;
-}
-
-message RangeProof {
-  bytes key = 1;
-  PathToLeaf left_path = 2;
-  repeated PathToLeaf inner_nodes = 3;
-  repeated ProofLeafNode leaves = 4;
+  bytes value = 2;
 }

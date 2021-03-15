@@ -30,8 +30,8 @@ services:
     expose:
       - "26658"
   iavl:
-    image: foamspace/iavl:latest
-    command: /iavlserver  -db-name "test" -datadir "."  -grpc-endpoint "0.0.0.0:8090"  -gateway-endpoint "0.0.0.0:8091"
+    image: foamspace/iavl:grpc
+    command: ["-db-name", "test", "-datadir", ".", " -grpc-endpoint", "0.0.0.0:8090", "-gateway-endpoint", "0.0.0.0:8091"]
     ports: 
      - "8090:8090"
      - "8091:8091"

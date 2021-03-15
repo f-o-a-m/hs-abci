@@ -149,3 +149,12 @@ has
   -> Api.HasRequest
   -> ClientIO (Either TooMuchConcurrency (RawReply Api.HasResponse))
 has = rawUnary (RPC :: RPC Api.IAVLService "has")
+
+--------------------------------------------------------------------------------
+-- | has_versioned
+--------------------------------------------------------------------------------
+hasVersioned
+  :: GrpcClient
+  -> Api.HasVersionedRequest
+  -> ClientIO (Either TooMuchConcurrency (RawReply Api.HasResponse))
+hasVersioned = rawUnary (RPC :: RPC Api.IAVLService "hasVersioned")

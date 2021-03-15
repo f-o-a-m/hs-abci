@@ -59,6 +59,8 @@ library:
   generated-exposed-modules:
   - Proto.Iavl.Api
   - Proto.Iavl.Api_Fields
+  - Proto.Iavl.Proof
+  - Proto.Iavl.Proof_Fields
   - Proto.Google.Api.Http
   - Proto.Google.Api.Http_Fields
   - Proto.Google.Protobuf.Empty
