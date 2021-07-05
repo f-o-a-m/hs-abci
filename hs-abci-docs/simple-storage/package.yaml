@@ -1,6 +1,6 @@
 name:                simple-storage
 version:             0.1.0.0
-github:              "f-o-a-m/kepler/hs-abci-docs/simple-storage"
+# github:              "f-o-a-m/kepler/hs-abci-docs/simple-storage"
 license:             Apache
 author:              Martin Allen
 maintainer:          "martin@foam.space"

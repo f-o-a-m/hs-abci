@@ -4,3 +4,10 @@ stack.yaml.lock
 *~
 .ci-bins/
 *.dump-hi
+
+# cabal
+dist-newstyle
+
+# nix
+result*
+result-*

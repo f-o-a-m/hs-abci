@@ -3,7 +3,7 @@ resolver: lts-15.10
 
 nix:
   #enabled: bool # defaults to true on nixos, false everywhere else
-  shell-file: shell-stack.nix
+  shell-file: nix/stack.nix
 
 packages:
 - ./hs-abci-types

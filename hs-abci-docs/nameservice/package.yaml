@@ -1,6 +1,6 @@
 name:                nameservice
 version:             0.1.0.0
-github:              "f-o-a-m/kepler/hs-abci-docs/nameservice"
+# github:              "f-o-a-m/kepler/hs-abci-docs/nameservice"
 license:             Apache
 author:              "Martin Allen"
 maintainer:          "martin@foam.space"
