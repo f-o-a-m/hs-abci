@@ -86,14 +86,14 @@ $(makeSubStore 'store "accountsMap" [t| Map Address Account|] accountsKey)
 This does the following:
 1. Makes a substore rooted at the `store :: Store AuthNamespace` defined above, and names this value `accountsMap`.
 2. Annotates `accountsMap` with type `Map Address Account`.
-3. Creates a singleton type `AccountsMapKey` which is the key to access this map directly. This key has is effectively a prefix "accountsMap".
+3. Creates a singleton type `AccountsMapKey` which is the key to access this map directly. This key is effectively a prefix "accountsMap".
 
 ## Querying the store
 
 If you wanted to query the underlying raw key-value store for the account associated to the address `0xdeadbeef`, then the actual key looks something like
 
 ~~~ haskell ignore
-encodeUtf8 "auth" <> encodeUtf8 "accountsMap" <> bytesFromHex "0xdeafbeef"
+encodeUtf8 "auth" <> encodeUtf8 "accountsMap" <> bytesFromHex "0xdeadbeef"
 ~~~
 
 While writing apps inside the SDK you do not need to worry about the explicit prefixing since everything is taken care of for you. However, if you are querying for state via an ABCI `query` message, the `key` field that is returned in the response will contain this full path. In the above example, if you wanted to recover the address from the key, you would need to know the prefixes that were applied.

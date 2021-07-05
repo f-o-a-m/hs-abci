@@ -4,7 +4,7 @@ title: Nameservice - Testing
 
 # Testing and Client Generation
 
-It's time to see the real benefits of including as much information as possible in the types, which goes beyond a simple guarantee that certain things won't fail at runtime. Since the `api`s for querying state and delivering transactions was specified in the type of each module, hence in the type of the application via the `ModulesList`, we are able to generate client libraries for these actions for free. This is especially useful in testing to eliminate as much boilerplate as possible, and to get compile time failures whenever an api change would break your tests.
+It's time to see the real benefits of including as much information as possible in the types, which goes beyond a simple guarantee that certain things won't fail at runtime. Since the `api`s for querying state and delivering transactions were specified in the type of each module, hence in the type of the application via the `ModulesList`, we are able to generate client libraries for these actions for free. This is especially useful in testing to eliminate as much boilerplate as possible, and to get compile time failures whenever an api change would break your tests.
 
 
 Let's take a look at how this works in the `E2E` test suite:
@@ -14,28 +14,30 @@ Let's take a look at how this works in the `E2E` test suite:
 
 module Tutorial.Nameservice.Testing where
 
-import           Control.Monad.Reader              (ReaderT, runReaderT)
-import           Data.Default.Class                (def)
-import           Data.Proxy
-import           Nameservice.Application
-import qualified Nameservice.Modules.Nameservice   as N
-import qualified Network.Tendermint.Client         as RPC
-import           Servant.API                       ((:<|>) (..))
+import Control.Monad.Reader (ReaderT, runReaderT)
+import Data.Default.Class (def)
+import Data.Proxy
+import Nameservice.Application
+import qualified Nameservice.Modules.Nameservice as N
+import qualified Network.Tendermint.Client as RPC
+import Servant.API ((:<|>) (..))
 import qualified Tendermint.SDK.Application.Module as M
-import           Tendermint.SDK.BaseApp.Errors     (AppError (..))
-import           Tendermint.SDK.BaseApp.Query      (QueryArgs (..),
-                                                    QueryResult (..))
-import qualified Tendermint.SDK.Modules.Auth       as Auth
-import qualified Tendermint.SDK.Modules.Bank       as B
-import           Tendermint.SDK.Types.Address      (Address)
-import           Tendermint.Utils.Client           (ClientConfig (..),
-                                                    EmptyTxClient (..),
-                                                    QueryClientResponse (..),
-                                                    TxClientResponse (..),
-                                                    TxOpts (..), HasTxClient(..),
-                                                    HasQueryClient(..),
-                                                    defaultClientTxOpts)
-import           Tendermint.Utils.ClientUtils      (rpcConfig)
+import Tendermint.SDK.BaseApp.Errors (AppError (..))
+import Tendermint.SDK.BaseApp.Query (QueryArgs (..), QueryResult (..))
+import qualified Tendermint.SDK.Modules.Auth as Auth
+import qualified Tendermint.SDK.Modules.Bank as B
+import Tendermint.SDK.Types.Address (Address)
+import Tendermint.Utils.Client
+  (ClientConfig (..)
+  , EmptyTxClient (..)
+  , QueryClientResponse (..)
+  , TxClientResponse (..)
+  , TxOpts (..)
+  , HasTxClient(..)
+  , HasQueryClient(..)
+  , defaultClientTxOpts
+  )
+import Tendermint.Utils.ClientUtils (rpcConfig)
 ~~~
 
 First let's look at how to generate a client for querying state. If you've ever used servant client, this should look familiar since the design was heavily influenced (i.e. shamelessly stolen) from there:

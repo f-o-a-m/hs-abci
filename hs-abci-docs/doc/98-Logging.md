@@ -10,7 +10,7 @@ The `Nameservice` application has support for either scribe -- it will use Elast
 
 ## Logging to Elasticsearch
 
-The docker network includes an `elk` image (Elasticsearch, Logstash, Kibana) for persisting and querying logs. You can read more about this stack [here](https://www.elastic.co/what-is/elk-stack). In summary `elk` is a powerful solution for hosting searchable structured logs. 
+The docker network includes an `elk` image (Elasticsearch, Logstash, Kibana) for persisting and querying logs. You can read more about this stack [here](https://www.elastic.co/what-is/elk-stack). In summary `elk` is a powerful solution for hosting searchable structured logs.
 
 When logging to Elasticsearch, you can use the Kibana dashboard for creating queries and visualizations. We will cover the basics here. If you have already launched the [docker network](TODO: Where is the instructions for this?), you can view the Kibana dashboard by going to http://localhost:5601/app/kibana. You should see something like
 
@@ -38,7 +38,7 @@ The log structure is effectively a JSON object (with nesting). There are a few f
 - `message_hash`: the SHA256 of the protobuf encoded bytes for the abci message that caused the logs.
 - `ns` (namespace): a list of increasingly specific scopes for where the log originated. In this case, `nameservice` is the root namespace, `server` or `application` is the next scope.
 
-Remember that the basic lifescycle of an `ABCI` message is that it first comes to the ABCI-server from tendermint, is then handed off to your application for processing, and finally the response is sent from the ABCI-server back to tendermint. In order to better track this lifecycle, we highly recommend you use the [logging middleware](https://github.com/f-o-a-m/kepler/blob/master/hs-abci-extra/src/Network/ABCI/Server/Middleware/Logger.hs). This middleware will attach the `message_type` and `message_hash` to the context for every single log that is produced, meaning that you can get a  trace for a given message by simply searching its hash.
+Remember that the basic lifecycle of an `ABCI` message is that it first comes to the ABCI-server from tendermint, is then handed off to your application for processing, and finally the response is sent from the ABCI-server back to tendermint. In order to better track this lifecycle, we highly recommend you use the [logging middleware](https://github.com/f-o-a-m/kepler/blob/master/hs-abci-extra/src/Network/ABCI/Server/Middleware/Logger.hs). This middleware will attach the `message_type` and `message_hash` to the context for every single log that is produced, meaning that you can get a  trace for a given message by simply searching its hash.
 
 ### Querying the Logs
 

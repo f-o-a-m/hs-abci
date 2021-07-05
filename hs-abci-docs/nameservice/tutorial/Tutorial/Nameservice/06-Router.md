@@ -11,23 +11,25 @@ The Router is where you specify the handlers for the messages that the module ac
 ~~~ haskell
 module Tutorial.Nameservice.Router where
 
-import           Nameservice.Modules.Nameservice.Keeper   (NameserviceEffs,
-                                                           buyName, deleteName,
-                                                           setName)
-import           Nameservice.Modules.Nameservice.Messages (BuyName, DeleteName,
-                                                           SetName)
-import           Polysemy                                 (Members, Sem)
-import           Tendermint.SDK.Modules.Bank (BankEffs)
-import           Servant.API                              ((:<|>) (..))
-import           Tendermint.SDK.BaseApp                   ((:~>), BaseEffs,
-                                                           Return,
-                                                           RouteContext (..),
-                                                           RouteTx,
-                                                           RoutingTx (..),
-                                                           TxEffs, TypedMessage,
-                                                           incCount, withTimer)
-import           Tendermint.SDK.Types.Message             (Msg (..))
-import           Tendermint.SDK.Types.Transaction         (Tx (..))
+import Nameservice.Modules.Nameservice.Keeper (NameserviceEffs, buyName, deleteName, setName)
+import Nameservice.Modules.Nameservice.Messages (BuyName, DeleteName, SetName)
+import Polysemy (Members, Sem)
+import Tendermint.SDK.Modules.Bank (BankEffs)
+import Servant.API ((:<|>) (..))
+import Tendermint.SDK.BaseApp
+  ((:~>)
+  , BaseEffs
+  , Return
+  , RouteContext (..)
+  , RouteTx
+  , RoutingTx (..)
+  , TxEffs
+  , TypedMessage
+  , incCount
+  , withTimer
+  )
+import Tendermint.SDK.Types.Message (Msg (..))
+import Tendermint.SDK.Types.Transaction (Tx (..))
 
 ~~~
 
@@ -49,7 +51,7 @@ Lets break it down:
 - `(:~>)` is a combinator that allows us to connect a message type with a response
 - `Return` is used to specify the return type.
 
-Since there are two possible ABCI messages that the router has to accomodate, `checkTx` and `deliverTx`, the router may return different values depending on the ABCI message type. For example, it's possible that the `checkTx` does not fully mimic the transaction and simply returns `()`, while the `deliverTx` message returns a value of type `Whois`. Concretely you would write
+Since there are two possible ABCI messages that the router has to accommodate, `checkTx` and `deliverTx`, the router may return different values depending on the ABCI message type. For example, it's possible that the `checkTx` does not fully mimic the transaction and simply returns `()`, while the `deliverTx` message returns a value of type `Whois`. Concretely you would write
 
 ~~~ haskell ignore
 type BuyNameHandler = TypeMessage BuyName :~> Return' 'OnCheckUnit Whois
@@ -61,7 +63,8 @@ or equivalently using the alias
 type BuyNameHandler = TypeMessage BuyName :~> Return Whois
 ~~~
 
- Alternatively, you could write the application so that each `checkTx` ABCI message is handled in the same way as the `deliverTx` message, e.g. the both return a value of type `Whois`.
+Alternatively, you could write the application so that each `checkTx` ABCI message is handled in the same way as the `deliverTx` message, e.g. the both return a value of type `Whois`.
+
 
 ~~~ haskell ignore
 type BuyNameHandler = TypeMessage BuyName :~> Return' 'OnCheckEval Whois

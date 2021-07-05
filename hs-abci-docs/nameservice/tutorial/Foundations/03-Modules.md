@@ -4,7 +4,7 @@ title: Foundations - Module
 
 # Modules and Components
 
-First a note. There is a small technical distinction betweek a `Module` and a `Component`, but we often use these words interchangable. A `Component` is simply a type synonym for a partially applied `Module`, which leaves the `r` parameter free. It's basically the type level description of a `Module` that hasn't yet been put in the context of a larger application, which is where the `r` comes in.
+First a note. There is a small technical distinction between a `Module` and a `Component`, but we often use these words interchangeably. A `Component` is simply a type synonym for a partially applied `Module`, which leaves the `r` parameter free. It's basically the type level description of a `Module` that hasn't yet been put in the context of a larger application, which is where the `r` comes in.
 
 ## Definition
 
@@ -35,7 +35,7 @@ Let's take a look at the type parameters
 
 - `name` is the name of the module, e.g. `"bank"`.
 - `check` is the transaction router api type for `checkTx` messages.
-- `deliver` is the transaction router api type for `checkTx` messages.
+- `deliver` is the transaction router api type for `deliverTx` messages.
 - `query` is the query router api type for `query` messages
 - `es` is the set of effects introduced by this module.
 - `deps` is the list of `Components` (i.e. Modules) that this module depends on, in the sense that the `eval` function for this module will interpret into those effects. (For example, the `BankEffs` for the `Bank` module are interpreted into `AuthEffs`)

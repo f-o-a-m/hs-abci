@@ -13,7 +13,7 @@ It is important to note that the database modeled by the `RawStore` effect (in t
 type RawStore = Map ByteString ByteString
 ~~~
 
-although the definition of `RawStore` is different than the above.
+Although the definition of `RawStore` is different than the above.
 
 The interface we give is actually a typed key value store. This means that within the scope of a module `m`, for any key type `k`, there is only one possible value type `v` associated with `k`.
 
@@ -25,7 +25,7 @@ balance :: Tendermint.SDK.Types.Address -> Integer
 
 (We'll properly introduce the module `Bank` later in the walkthrough.)
 
-This means that in the scope of the `Bank` module, the database utlity `get` function applied to a value of type `Address` will result in a value of type `Integer`. If the `Bank` module would like to store another mapping whose keys have type `Tendermint.SDK.Types.Address`, you must use a newtype instead. Otherwise you will get a compiler error.
+This means that in the scope of the `Bank` module, the database utility `get` function applied to a value of type `Address` will result in a value of type `Integer`. If the `Bank` module would like to store another mapping whose keys have type `Tendermint.SDK.Types.Address`, you must use a newtype instead. Otherwise you will get a compiler error.
 
 At the same time, you are free to define another mapping from `k -> v` in the scope of a different module. For example, you can have both the `balance` mapping described above, as well as a mapping
 

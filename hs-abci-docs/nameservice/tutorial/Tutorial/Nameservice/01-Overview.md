@@ -24,6 +24,6 @@ The contents of these modules are roughly as follows:
 - `Nameservice.Message` - Defines the message types that the module must process (if any) and their validation instances.
 - `Nameservice.Query` - Defines the query server for handling state queries from clients.
 - `Nameservice.Router` - Defines the transaction router for the module.
-- `Namervice` Defines the module itself and re-exports any types or utils necessary for using this module as a dependency.
+- `Nameservice` Defines the module itself and re-exports any types or utils necessary for using this module as a dependency.
 
-The reason why we suggest this is that each of these haskell modules is buiding up one of the core components of our definition of a module, and it provides a nice logical split between these pieces.
+The reason why we suggest this is that each of these haskell modules is building up one of the core components of our definition of a module, and it provides a nice logical split between these pieces.

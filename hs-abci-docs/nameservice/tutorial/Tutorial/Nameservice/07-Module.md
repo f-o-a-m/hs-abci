@@ -15,9 +15,9 @@ import Nameservice.Modules.Nameservice.Keeper (NameserviceEffs, eval)
 import Nameservice.Modules.Nameservice.Query (QueryApi, querier)
 import Nameservice.Modules.Nameservice.Router (MessageApi, messageHandlers)
 import Nameservice.Modules.Nameservice.Types (NameserviceName)
-import Tendermint.SDK.Application               (Module (..), ModuleEffs)
+import Tendermint.SDK.Application (Module (..), ModuleEffs)
 import Tendermint.SDK.BaseApp (DefaultCheckTx (..))
-import Tendermint.SDK.Modules.Bank                (Bank)
+import Tendermint.SDK.Modules.Bank (Bank)
 import Data.Proxy
 import Polysemy (Members)
 

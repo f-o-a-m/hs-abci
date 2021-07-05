@@ -43,7 +43,7 @@ This tutorial should teach you:
 1. How to construct application specific modules.
 2. How to enable a module to receive application specific transactions.
 3. How to compose modules and wire up an application.
-4. How to add event logging, console logging, and other effects to module.
+4. How to add event logging, console logging, and other effects to a module.
 4. How to use the type system to control the capabilities of a module.
 
 The SDK makes heavy use of the effects system brought to haskell by the [polysemy](https://hackage.haskell.org/package/polysemy-1.2.3.0) library. We're not going to explain how this library works here, there are several existing tutorials that do this already. Suffice it to say that polysemy encourages the application developer to develop modules that have well defined roles and scopes, and to prohibit certain modules from interfering with the roles and scopes of other modules unless explicitly allowed by the type system.

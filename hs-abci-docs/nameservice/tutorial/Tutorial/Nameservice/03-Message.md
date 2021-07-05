@@ -9,11 +9,11 @@ title: Nameservice - Message
 Each module is ultimately a small state machine used for processing messages. Each module must define what messages it accepts, if any. Like many other types found in the SDK, this message class must implement the `HasCodec` class. We recommend using a protobuf serialization format for messages using either the `proto3-suite` or `proto-lens` libraries, though in theory you could use anything (e.g. `JSON`).
 
 ### `proto3-suite`
-The advantages of using the `proto3-suite` library are that it has support for generics and that you can generate a `.proto` file from your haskell code for export to other applications. This is particularly useful when prototyping or when you have control over the message specification.
+The advantages of using the `proto3-suite` library is that it has support for generics and that you can generate a `.proto` file from your haskell code for export to other applications. This is particularly useful when prototyping or when you have control over the message specification.
 The disadvantage is that `proto3-suite` doesn't act as a `protoc` plugin, and instead uses it's own protobuf parser. This means that you do not have access to the full protobuf specs when parsing `.proto` files.
 
 ### `proto-lens`
-The advantages of using `proto-lens` are that it can parse and generate types for pretty much any `.proto` file.
+The advantages of using `proto-lens` is that it can parse and generate types for pretty much any `.proto` file.
 The disadvantage is that the generated code is a bit strange, and may require you to create wrapper types to avoid depending directly on the generated code. An additional disadvantage is that you cannot generate `.proto` files from haskell code.
 
 All in all, neither is really difficult to work with, and depending on what stage you're at in development you might chose one over the other.
@@ -137,7 +137,7 @@ Message validation is an important part of the transaction life cycle. When a `c
 3. The message author has enough funds for the gas costs, if any.
 4. The message can be successfully routed to a module without handling.
 
-On top of this you might wish to ensure other static properties of the message, such as that the author of the message is the owner of the funds being transfered. For this we have a `ValidateMessage` class:
+On top of this you might wish to ensure other static properties of the message, such as, that the author of the message is the owner of the funds being transferred. For this we have a `ValidateMessage` class:
 
 ~~~ haskell ignore
 data MessageSemanticError =
@@ -149,7 +149,7 @@ class ValidateMessage msg where
   validateMessage :: Msg msg -> Validation [MessageSemanticError] ()
 ~~~
 
-We're using the applicative functor [`Data.Validation.Validation`](https://hackage.haskell.org/package/validation-1.1/docs/Data-Validation.html#t:Validation) to perform valdiation because it is capable of reporting all errors at once, rather than the first that occurs as in the case with something like `Either`.
+We're using the applicative functor [`Data.Validation.Validation`](https://hackage.haskell.org/package/validation-1.1/docs/Data-Validation.html#t:Validation) to perform validation because it is capable of reporting all errors at once, rather than the first that occurs as in the case with something like `Either`.
 
 Here's what the `isAuthor` check looks like, that was described above:
 
